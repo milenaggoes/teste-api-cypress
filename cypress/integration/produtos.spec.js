@@ -1,16 +1,16 @@
-///<reference types = "cypress" />
+/// <reference types = "cypress" />
 
 describe('Testes da Funcionalidade Produtos', () => {
     let token
     before(() => {
-        cy.token('fulano@qa.com', 'teste').then(tkn => {token = tkn})
+        cy.token('fulano@qa.com', 'teste').then(tkn => { token = tkn})
     });
 
     it('Listar produtos', () => {
         cy.request({
             method: 'GET',
             url: 'produtos'
-        }).then((response)=>{
+        }).then((response) =>{
             expect(response.body.produtos[0].nome).to.equal('Logitech MX Vertical')
             expect(response.status).to.equal(200)
             expect(response.body).to.have.property('produtos')
@@ -18,7 +18,7 @@ describe('Testes da Funcionalidade Produtos', () => {
         })
     });
 
-    it('Cadastrar produto', () => {
+    it.only('Cadastrar produto', () => {
         let produto = `produto EBAC ${Math.floor(Math.random() * 1000000000)}`
         cy.request({
             method: 'POST',
@@ -44,4 +44,5 @@ describe('Testes da Funcionalidade Produtos', () => {
             expect(response.body.message).to.equal('Já existe produto com esse nome')
         })
     });
-});
+
+})
