@@ -18,7 +18,7 @@ describe('Testes da Funcionalidade Produtos', () => {
         })
     });
 
-    it.only('Cadastrar produto', () => {
+    it('Cadastrar produto', () => {
         let produto = `produto EBAC ${Math.floor(Math.random() * 1000000000)}`
         cy.request({
             method: 'POST',
@@ -42,6 +42,25 @@ describe('Testes da Funcionalidade Produtos', () => {
         .then((response)=>{
             expect(response.status).to.equal(400)
             expect(response.body.message).to.equal('Já existe produto com esse nome')
+        })
+    });
+
+    it.only('Deve editar um produto ja cadastrado', () => {
+        cy.request('produtos').then(response => {
+            let id = response.body.produtos[0]._id
+            cy.request({
+                method: 'PUT',
+                url: `produtos/${id}`,
+                headers: {authorization: token},
+                body:{
+                    "nome": "logitech MC Vertical",
+                    "preco": 470,
+                    "descricao": "Mouse",
+                    "quantidade": 381
+                }
+            }).then(response => {
+                expect(response.body.message).to.equal('Registro alterado com sucesso')
+            })
         })
     });
 
